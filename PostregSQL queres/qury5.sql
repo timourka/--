@@ -22,7 +22,7 @@ BEGIN
             nextval('IdsJob'),
             NEW.job_name,
             NEW.job_description,
-            NEW.requirement,
+            NEW.reqirement,
             (SELECT id FROM department
              WHERE name = NEW.department_name)
         );
@@ -65,14 +65,10 @@ CREATE OR REPLACE FUNCTION check_worker_fields_format()
 RETURNS TRIGGER AS $check_worker_fields_format$
 BEGIN
 
-    IF NEW.telephone !~ '^\\+7-\\(\\d{3}\\)-\\d{3}-\\d{2}-\\d{2}$' THEN
+    IF NEW.telephone IS NOT NULL AND NEW.telephone NOT LIKE '+7-(___)-___-__-__' THEN
         RAISE EXCEPTION 'Некорректный формат телефона! Формат должен быть: +7-(xxx)-xxx-xx-xx';
     END IF;
-
-    IF NEW.date_of_birth IS NOT NULL AND NEW.date_of_birth !~ '^\\d{4}-\\d{2}-\\d{2}$' THEN
-        RAISE EXCEPTION 'Некорректный формат даты рождения! Формат должен быть: YYYY-MM-DD';
-    END IF;
-
+    
     RETURN NEW;
 END;
 $check_worker_fields_format$ LANGUAGE plpgsql;
@@ -80,3 +76,18 @@ $check_worker_fields_format$ LANGUAGE plpgsql;
 CREATE OR REPLACE TRIGGER check_worker_fields_trigger
 BEFORE INSERT ON worker
 FOR EACH ROW EXECUTE FUNCTION check_worker_fields_format();
+
+INSERT INTO workerfullview VALUES (
+    nextval('IdsWorker'),
+    'Алексей Петров Петрович',
+    '1990-03-25',
+    'г. Санкт-Петербург, ул. Центральная, д. 50',
+    '+7-(111)-222-33-44',
+    'exampleAlexPetrov@email.com',
+    'Аналитик',
+    'Анализ данных и отчетность',
+    'Опыт работы в анализе данных от 3 лет',
+    'аналитика',
+    'Отдел аналитики и статистики',
+    'Наталья Сидорова Дмитриевна'
+);
