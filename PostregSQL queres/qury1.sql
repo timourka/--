@@ -82,7 +82,12 @@ DROP SEQUENCE IdsWorker;
 DROP SEQUENCE IdsVacation;
 DROP SEQUENCE IdsContract;
 
-INSERT INTO department VALUES (nextval('IdsDepartment'), 'продажи', 'отдел занимается продажами и клиентским обслуживаием', 'Анна Иванова');
+INSERT INTO department VALUES (
+    nextval('IdsDepartment'),
+    'продажи',
+    'отдел занимается продажами и клиентским обслуживаием',
+    'Анна Иванова'
+);
 INSERT INTO job VALUES (
     nextval('IdsJob'),
     'Менеджер по продажам',
