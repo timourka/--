@@ -30,3 +30,14 @@ JOIN works W ON W.contract_id = C.id
 JOIN tasks T ON T.work_id = W.id
 JOIN statuses S ON T.status_id = S.id
 ORDER BY E.id;
+
+CREATE OR REPLACE VIEW Quantities AS
+SELECT 'quantity' AS _, T.*, D.*, total-done AS not_done
+FROM (
+    SELECT count(C.id) AS total
+    FROM contracts C
+) T, (
+    SELECT count(C.id) AS done
+    FROM contracts C
+    WHERE calc_fulfilment_status(C.id) = 1
+) D;

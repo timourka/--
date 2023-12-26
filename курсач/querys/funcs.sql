@@ -18,4 +18,15 @@ BEGIN
 END;
 $calc_Fulfilment_status$ LANGUAGE plpgsql;
 
-SELECT calc_Fulfilment_status(3);
+SELECT calc_Fulfilment_status(1);
+
+CREATE OR REPLACE PROCEDURE done_linked(id_work INTEGER)
+LANGUAGE plpgsql AS $done_linked$
+BEGIN  
+    UPDATE tasks
+    SET status_id = 1
+    WHERE work_id = id_work;
+END;
+$done_linked$
+
+CALL done_linked(1);
