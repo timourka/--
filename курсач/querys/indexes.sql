@@ -1,0 +1,2 @@
+-- Active: 1698417979383@@127.0.0.1@5432@Kursach
+CREATE INDEX 
